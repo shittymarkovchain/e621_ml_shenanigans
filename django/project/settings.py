@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'userfind.apps.UserfindConfig',
+    'recommender.apps.RecommenderConfig',
 ]
 
 MIDDLEWARE = [
