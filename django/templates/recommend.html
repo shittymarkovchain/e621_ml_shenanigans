@@ -1,5 +1,24 @@
-<form method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit">
-</form>
+<br />
+<br />
+<br />
+<br />
+<div align="center">
+	<form method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="Submit">
+	</form>
+	<br/>
+	<br/>
+	<br/>
+	<p>
+	This gives you recommendations on e621.net based on your favorites.
+	<br/>
+	Enter your username (case sensitive) and wait a bit, it may take about 15s.
+	</p>
+	<br/>
+	<p>
+	<a href="https://github.com/shittymarkovchain/e621_ml_shenanigans">git</a>
+	<a href="mailto:s.markovchain@gmail.com">contact</a>
+	</p>
+</div>
