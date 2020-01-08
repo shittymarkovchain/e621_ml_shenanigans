@@ -17,6 +17,7 @@ import pandas as pd
 import string
 import time
 import datetime
+from django.views.decorators.csrf import csrf_exempt
 
 url = "http://e621.net"
 username = "shitty_markov_chain"
@@ -138,6 +139,7 @@ recommender = Recommender()
 
 
 
+@csrf_exempt
 def recommenderView(request):
     begin = time.time()
     if request.method == 'POST':

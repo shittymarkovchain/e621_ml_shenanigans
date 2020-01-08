@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 import heapq
 
@@ -8,6 +9,7 @@ import numpy as np
 
 users_data = pickle.load(open("users_preprocess.p", "rb"))
 
+@csrf_exempt
 def userFindView(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
