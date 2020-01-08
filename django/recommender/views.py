@@ -39,8 +39,7 @@ class Recommender:
         self.next_request = time.time()
         self.df = pd.read_csv("updated_posts.csv")
         
-        self.model, self.posts_encoded, self.posts_mapping = CustomUnpickler(open('deploy_data', 'rb')).load()
-        self.model.eval()
+
 
         
         self.df["tags"] = self.df["tags"].apply(lambda s: self.clean(s))
@@ -49,15 +48,23 @@ class Recommender:
         self.df["whitelist"] = self.df.tags.apply(lambda x: not bool(set(x.split()) & blacklist))
         
         whitelist = set(self.df[(self.df["score"] > 75) & self.df["whitelist"]].id.values)
-        self.all_ids = set(self.posts_mapping) & whitelist
         
         self.img_map = dict()
         for id, link in self.df[["id", "sample_url"]].values:
-            self.img_map[id] = link
+            if id in whitelist:
+                self.img_map[id] = link
         self.description_map = dict()
         for id, score, fav_count, tags in self.df[["id", "score", "fav_count", "tags"]].values:
-            description = f"score:{score} fav_count:{fav_count} {tags}"
-            self.description_map[id] = description
+            if id in whitelist:
+                description = f"score:{score} fav_count:{fav_count} {tags}"
+                self.description_map[id] = description
+
+        del self.df
+
+        self.model, self.posts_encoded, self.posts_mapping = CustomUnpickler(open('deploy_data', 'rb')).load()
+        self.model.eval()
+
+        self.all_ids = set(self.posts_mapping) & whitelist
 
         print("loading static data: done", flush=True)
 
