@@ -89,16 +89,16 @@ class Recommender:
             string = r.content
             return json.loads(string)
         else:
-            raise RuntimeError(f'Error {r.status_code} while sending a request to e6')
+            raise RuntimeError(f'Error {r.status_code} while getting {url}')
 
     def list_for_user(self, name, max=960):
         res = []
         current_id = 2105591
         while True:
-            post_url = url + "/post/index.json?tags=fav:{}&before_id={}&limit=320".format(name, current_id)
+            post_url = url + "/posts.json?tags=fav:{} id:<{}&limit=320".format(name, current_id)
             content = self.request(post_url)
             n_posts = len(content)
-            for post in content:
+            for post in content["posts"]:
                 res.append(post["id"])
                 current_id = min(current_id, post["id"])
             if n_posts < 320 or len(res) >= max:
